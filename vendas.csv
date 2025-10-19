@@ -1,0 +1,2 @@
+﻿id_cliente,nome_cliente,data_fatura,valor_total,detalhes
+cli-5432,bruno costa,12/10/2025,"r$ 1.120,00","['- item c: 10 unidades', '- item d: 1 unidade']"

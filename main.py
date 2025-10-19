@@ -2,6 +2,7 @@ import os
 import pdfplumber
 import re
 import shutil
+import pandas as pd
 
 def ler_dados_pdf (dir_pdf):
     with pdfplumber.open(dir_pdf) as pdf:
@@ -51,17 +52,22 @@ def ler_dados_pdf (dir_pdf):
 dir_pdf = os.path.dirname(__file__)
 
 pdf_list = [f for f in os.listdir(dir_pdf) if f.endswith(".pdf") or f.endswith(".PDF")]
+dados_list = []
 
 for arquivo in pdf_list:
     try:
         dados_pdf = ler_dados_pdf(arquivo)
-        print(dados_pdf.get("detalhes"))
         nome_pasta = str(dados_pdf.get("data_fatura"))
         nome_pasta = nome_pasta.replace("/","-")
         dir_pasta = os.path.join(dir_pdf, nome_pasta)
         if not os.path.exists(dir_pasta):
             os.makedirs(dir_pasta, exist_ok=True)
         shutil.move(arquivo, dir_pasta)
-        print(nome_pasta)
+        dados_list.append(dados_pdf)
     except Exception as e:
         print(f"Erro: {e}")
+
+df = pd.DataFrame(dados_list)
+print(df.head())
+df.to_csv("vendas.csv", index=False, encoding="utf-8-sig")
+df.to_excel("vendas.xlsx", index=False, engine="openpyxl")
