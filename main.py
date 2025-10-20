@@ -67,7 +67,15 @@ for arquivo in pdf_list:
     except Exception as e:
         print(f"Erro: {e}")
 
-df = pd.DataFrame(dados_list)
+excel_path = os.path.join(dir_pdf, "vendas.xlsx")
+csv_path = os.path.join(dir_pdf, "vendas.csv")
+if os.path.isfile(excel_path) and os.path.isfile(csv_path):
+    df_antigo = pd.read_excel(excel_path)
+    df_novo = pd.DataFrame(dados_list)
+    df = pd.concat([df_antigo, df_novo], ignore_index=True)
+else:
+    df = pd.DataFrame(dados_list)
+
 print(df.head())
 df.to_csv("vendas.csv", index=False, encoding="utf-8-sig")
 df.to_excel("vendas.xlsx", index=False, engine="openpyxl")
