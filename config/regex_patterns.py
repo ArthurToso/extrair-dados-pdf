@@ -1,0 +1,5 @@
+ID_CLIENTE_RE = r"id\s+do\s+cliente:\s+(.*)"
+NOME_CLIENTE_RE = r"nome\s+do\s+cliente:\s+(.*)"
+DATA_FATURA_RE = r"data\s+da\s+fatura:\s+(.*)"
+VALOR_TOTAL_RE = r"valor\s+total:\s+(.*)"
+DETALHES_RE = r"detalhes:(.*)----------------------------------------"

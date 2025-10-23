@@ -1,81 +1,36 @@
 import os
-import pdfplumber
-import re
 import shutil
 import pandas as pd
+from config.dirs import DIR_OUTPUT, DIR_PDF
+from config.settings import PDF_LIST, DADOS_LIST, EXCEL_PATH, CSV_PATH
+from extract_pdf.extract_text import extrair_texto
+from extract_pdf.parser import obter_dados
 
-def ler_dados_pdf (dir_pdf):
-    with pdfplumber.open(dir_pdf) as pdf:
-        dados_pdf = {}
-        pdf_page = pdf.pages[0]
-        texto_pdf = pdf_page.extract_text().lower()
-        id_cliente_regex = r"id\s+do\s+cliente:\s+(.*)"
-        nome_cliente_regex = r"nome\s+do\s+cliente:\s+(.*)"
-        data_fatura_regex = r"data\s+da\s+fatura:\s+(.*)"
-        valor_total_regex = r"valor\s+total:\s+(.*)"
-        detalhes_regex = r"detalhes:(.*)----------------------------------------"
-    
-        #Match id_cliente
-        match = re.search(id_cliente_regex, texto_pdf)
-        if match:
-            dados_pdf["id_cliente"] = match.group(1)
-        else:
-            dados_pdf["id_cliente"] = "Id do Cliente Não Encontrado"
-        #Match nome_cliente
-        match = re.search(nome_cliente_regex, texto_pdf)
-        if match:
-            dados_pdf["nome_cliente"] = match.group(1)
-        else:
-            dados_pdf["nome_cliente"] = "Nome do Cliente Não Encontrado"
-        #Match data_fatura
-        match = re.search(data_fatura_regex, texto_pdf)
-        if match:
-            dados_pdf["data_fatura"] = match.group(1)
-        else:
-            dados_pdf["data_fatura"] = "Data da Fatura Não Encontrada"
-        #Match valor_total
-        match = re.search(valor_total_regex, texto_pdf)
-        if match:
-            dados_pdf["valor_total"] = match.group(1)
-        else:
-            dados_pdf["valor_total"] = "Valor Total Não Encontrado"
-        #Match detalhes
-        match = re.search(detalhes_regex, texto_pdf, re.DOTALL)
-        if match:
-            texto_aux = match.group(1).strip()
-            detalhes_list = texto_aux.split("\n")
-            dados_pdf["detalhes"] = detalhes_list
-        else:
-            dados_pdf["detalhes"] = "Detalhes Não Encontrado"
-    return dados_pdf
+def processa_lista_pdf (pdf_list):
+    if len(pdf_list) > 0:
+        for pdf in pdf_list:
+            try:
+                texto = extrair_texto(pdf)
+                print(texto)
+                dados_pdf = obter_dados(texto)
+                print(dados_pdf)
+            except Exception as e:
+                print(f"Erro na execução: {e}")
+    else:
+        print("Não foram encontrados PDF's para processar")
 
-dir_pdf = os.path.dirname(__file__)
+if __name__ == "__main__":
+    processa_lista_pdf(PDF_LIST)
 
-pdf_list = [f for f in os.listdir(dir_pdf) if f.endswith(".pdf") or f.endswith(".PDF")]
-dados_list = []
 
-for arquivo in pdf_list:
-    try:
-        dados_pdf = ler_dados_pdf(arquivo)
-        nome_pasta = str(dados_pdf.get("data_fatura"))
-        nome_pasta = nome_pasta.replace("/","-")
-        dir_pasta = os.path.join(dir_pdf, nome_pasta)
-        if not os.path.exists(dir_pasta):
-            os.makedirs(dir_pasta, exist_ok=True)
-        shutil.move(arquivo, dir_pasta)
-        dados_list.append(dados_pdf)
-    except Exception as e:
-        print(f"Erro: {e}")
-
-excel_path = os.path.join(dir_pdf, "vendas.xlsx")
-csv_path = os.path.join(dir_pdf, "vendas.csv")
-if os.path.isfile(excel_path) and os.path.isfile(csv_path):
+excel_path = DIR_OUTPUT / "vendas.xlsx"
+csv_path = DIR_OUTPUT / "vendas.csv"
+if excel_path.exists() and csv_path.exists():
     df_antigo = pd.read_excel(excel_path)
-    df_novo = pd.DataFrame(dados_list)
+    df_novo = pd.DataFrame(DADOS_LIST)
     df = pd.concat([df_antigo, df_novo], ignore_index=True)
 else:
-    df = pd.DataFrame(dados_list)
+    df = pd.DataFrame(DADOS_LIST)
 
-print(df.head())
-df.to_csv("vendas.csv", index=False, encoding="utf-8-sig")
-df.to_excel("vendas.xlsx", index=False, engine="openpyxl")
+df.to_csv(CSV_PATH, index=False, encoding="utf-8-sig")
+df.to_excel(EXCEL_PATH, index=False, engine="openpyxl")

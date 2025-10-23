@@ -1,7 +1,0 @@
-﻿id_cliente,nome_cliente,data_fatura,valor_total,detalhes
-cli-9876,ana schmidt,10/10/2025,"r$ 250,75","['- item a: 1 unidade', '- item b: 3 unidades']"
-cli-9876,ana schmidt,10/10/2025,"r$ 250,75","['- item a: 1 unidade', '- item b: 3 unidades']"
-cli-5432,bruno costa,12/10/2025,"r$ 1.120,00","['- item c: 10 unidades', '- item d: 1 unidade']"
-cli-9876,ana schmidt,10/10/2025,"r$ 250,75","['- item a: 1 unidade', '- item b: 3 unidades']"
-cli-9876,ana schmidt,10/10/2025,"r$ 250,75","['- item a: 1 unidade', '- item b: 3 unidades']"
-cli-5432,bruno costa,12/10/2025,"r$ 1.120,00","['- item c: 10 unidades', '- item d: 1 unidade']"
