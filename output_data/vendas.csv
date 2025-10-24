@@ -1,1 +1,7 @@
-﻿
+﻿id_cliente,nome_cliente,data_fatura,valor_total,detalhes
+cli-9876,ana schmidt,10/10/2025,"r$ 250,75",Erro ao extrair DETALHES
+cli-9876,ana schmidt,10/10/2025,"r$ 250,75",Erro ao extrair DETALHES
+cli-5432,bruno costa,12/10/2025,"r$ 1.120,00",Erro ao extrair DETALHES
+cli-9876,ana schmidt,10/10/2025,"r$ 250,75",Erro ao extrair DETALHES
+cli-9876,ana schmidt,10/10/2025,"r$ 250,75",Erro ao extrair DETALHES
+cli-5432,bruno costa,12/10/2025,"r$ 1.120,00",Erro ao extrair DETALHES
