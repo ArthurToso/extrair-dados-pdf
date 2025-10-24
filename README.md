@@ -36,7 +36,7 @@ Este projeto foi desenvolvido em Python 3.12.6 e requer as seguintes bibliotecas
 
 * **pandas**: Para manipulação de dados e exportação para CSV/Excel.
 * **openpyxl**: Dependência do `pandas` para escrever arquivos `.xlsx`.
-* **pdfplumber**: (ex: `pdfplumber`, `PyPDF2`, `fitz`).
+* **pdfplumber**: para extração de texto em um PDF.
 * **Consultar requirements.txt**
 
 **Instalação:**
@@ -51,8 +51,7 @@ Este projeto foi desenvolvido em Python 3.12.6 e requer as seguintes bibliotecas
 
 3.  Instale as dependências:
     ```bash
-    # Atualize esta linha com a biblioteca de PDF que você usou
-    pip install pandas openpyxl pdfplumber
+    pip install -r requirements.txt
     ```
     
 ## 🚀 Como Usar
