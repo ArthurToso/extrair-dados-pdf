@@ -209,4 +209,5 @@ __marimo__/
 /input_data/
 /output_data/
 /processados/
+/logs/
 *.log
