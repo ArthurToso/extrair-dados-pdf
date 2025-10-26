@@ -3,6 +3,7 @@ from extract_pdf.extract_text import extrair_texto
 from extract_pdf.parser import obter_dados
 from storage.cria_dataframe import cria_csv_xlsx
 from config.logger import cria_log
+from storage.cria_pastas import mover_pdf
 
 def processa_lista_pdf (pdf_list):
     log = cria_log(__name__) 
@@ -16,6 +17,7 @@ def processa_lista_pdf (pdf_list):
                 log.info(f'Extraindo os dados do PDF: {pdf}')
                 DADOS_LIST.append(dados_pdf)
                 log.info(f'PDF: {pdf} Processado com sucesso!')
+                mover_pdf(pdf, dados_pdf.get('data_fatura'))
             except Exception as e:
                 log.error(f'Erro no processamento do PDF: {e}')
         try:
